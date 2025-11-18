@@ -49,12 +49,12 @@
                                 <Label text="Nombre:" GridPane.rowIndex="1" />
                                 <Label text="Telefono:" GridPane.rowIndex="2" />
                                 <Label text="Correo:" GridPane.rowIndex="3" />
-                                <TextField fx:id="txtCodigo" GridPane.columnIndex="1" />
+                                <TextField fx:id="txtId" GridPane.columnIndex="1" />
                                 <TextField fx:id="txtNombre" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                <TextField fx:id="txtPrecio" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                <TextField fx:id="txtStock" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                <TextField fx:id="txtTelefono" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <TextField fx:id="txtCorreo" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Label text="Motivo de consulta:" GridPane.rowIndex="4" />
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField fx:id="txtMotivo" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                             </children>
                         </GridPane>
                         <VBox prefHeight="132.0" prefWidth="214.0">
@@ -87,10 +87,11 @@
                     <children>
                         <TableView fx:id="tablaLibros" prefHeight="182.0" prefWidth="567.0">
                             <columns>
-                                <TableColumn fx:id="colCodigo" prefWidth="127.1999568939209" text="Código" />
-                                <TableColumn fx:id="colNombre" prefWidth="147.199951171875" text="Nombre" />
-                                <TableColumn fx:id="colPrecio" prefWidth="139.20001220703125" text="Precio" />
-                                <TableColumn fx:id="colStock" prefWidth="152.79989624023438" text="Stock" />
+                                <TableColumn fx:id="colId" prefWidth="94.4000244140625" text="Cedula" />
+                                <TableColumn fx:id="colNombre" prefWidth="128.79998779296875" text="Nombre" />
+                        <TableColumn fx:id="colTelefono" prefWidth="103.20001220703125" text="Telefono" />
+                        <TableColumn fx:id="colCorreo" prefWidth="128.79998779296875" text="Correo" />
+                                <TableColumn fx:id="colMotivo" prefWidth="104.79998779296875" text="Motivo" />
                             </columns>
                         </TableView>
                     </children>
