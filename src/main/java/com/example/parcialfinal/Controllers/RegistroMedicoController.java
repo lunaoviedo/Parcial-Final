@@ -82,7 +82,7 @@ public class RegistroMedicoController {
     }
     private void cargarMedicos() {
         medicosObservable = medicoRepository.getMedicos();
-        tablaMedicos.setItemsmedico(medicosObservable);
+        tablaMedicos.setItemsMedico(medicosObservable);
     }
 
     private void limpiarCampos() {
