@@ -5,7 +5,7 @@ import com.example.parcialfinal.Models.Libro;
 import com.example.parcialfinal.Models.Usuario;
 import com.example.parcialfinal.Models.DetallePrestamo;
 import com.example.parcialfinal.Repository.LibroRepository;
-import com.example.parcialfinal.Repository.UsuarioRepository;
+import com.example.parcialfinal.Repository.MedicoRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.util.StringConverter;
@@ -47,14 +47,14 @@ public class PrestamosController {
     private TableView<DetallePrestamo> tablaPrestamos;
     private ObservableList<DetallePrestamo> listaPrestamos;
     private LibroRepository libroRepository;
-    private UsuarioRepository usuarioRepository;
+    private MedicoRepository medicoRepository;
     private double precioUnitario = 0.0;
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     @FXML
     public void initialize() {
         libroRepository = LibroRepository.getInstancia();
-        usuarioRepository = UsuarioRepository.getInstancia();
+        medicoRepository = MedicoRepository.getInstancia();
         listaPrestamos = FXCollections.observableArrayList();
         configurarTabla();
         inicializarComponentes();
@@ -111,7 +111,7 @@ public class PrestamosController {
     }
 
     private void cargarUsuarios() {
-        cmbUsuario.setItems(FXCollections.observableArrayList(usuarioRepository.getUsuarios()));
+        cmbUsuario.setItems(FXCollections.observableArrayList(medicoRepository.getUsuarios()));
 
         cmbUsuario.setConverter(new StringConverter<Usuario>() {
             @Override
