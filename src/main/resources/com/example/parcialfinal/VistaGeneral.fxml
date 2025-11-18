@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #fafbfc; -fx-border-color: black;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.parcialfinal.Controllers.GeneralController">
+    <children>
+        <AnchorPane style="-fx-border-color: black;">
+            <children>
+                <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                    <left>
+                        <VBox style="-fx-border-color: black; -fx-background-color: #799bba;" BorderPane.alignment="CENTER">
+                            <children>
+                                <VBox alignment="CENTER" prefHeight="134.0" prefWidth="178.0">
+                                    <children>
+                                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="160.0" prefWidth="284.0" text=" Biblioteca" textFill="WHITE">
+                                            <font>
+                                                <Font name="System" size="27.0" />
+                                            </font>
+                                            <VBox.margin>
+                                                <Insets bottom="10.0" top="10.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                    </children>
+                                </VBox>
+                                <VBox prefHeight="266.0" prefWidth="178.0">
+                                    <children>
+                                        <AnchorPane prefHeight="264.0" prefWidth="326.0">
+                                            <children>
+                                                <Button fx:id="btnUsuarios" alignment="CENTER" layoutX="20.0" layoutY="28.0" mnemonicParsing="false" onAction="#onUsuarios" prefHeight="48.0" prefWidth="137.0" style="-fx-border-radius: 70; -fx-background-color: #416282; -fx-border-color: black; -fx-background-radius: 70;" text="Usuarios" textFill="#fafafa">
+                                                    <font>
+                                                        <Font size="13.5" />
+                                                    </font>
+                                                </Button>
+                                                <Button fx:id="btnLibros" alignment="CENTER" layoutX="20.0" layoutY="91.0" mnemonicParsing="false" onAction="#onLibros" prefHeight="48.0" prefWidth="137.0" style="-fx-border-radius: 70; -fx-background-color: #416282; -fx-border-color: black; -fx-background-radius: 70;" text="Libros" textFill="#fafafa">
+                                                    <font>
+                                                        <Font size="13.5" />
+                                                    </font>
+                                                </Button>
+                                                <Button fx:id="btnPrestamos" alignment="CENTER" layoutX="20.0" layoutY="150.0" mnemonicParsing="false" onAction="#onPrestamos" prefHeight="48.0" prefWidth="137.0" style="-fx-border-radius: 70; -fx-background-color: #416282; -fx-border-color: black; -fx-background-radius: 70;" text="Prestamos" textFill="#fafafa">
+                                                    <font>
+                                                        <Font size="13.5" />
+                                                    </font>
+                                                </Button>
+                                            </children>
+                                        </AnchorPane>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+                    </left>
+                    <center>
+                        <AnchorPane fx:id="panelContenido" prefHeight="404.0" prefWidth="450.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <HBox layoutX="134.0" layoutY="20.0" />
+                                <Label layoutX="126.0" layoutY="20.0" text="Seleccione una opción">
+                                    <font>
+                                        <Font name="System Bold" size="16.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </AnchorPane>
+                    </center>
+                </BorderPane>
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>
