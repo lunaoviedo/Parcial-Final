@@ -1,7 +1,7 @@
 package com.example.parcialfinal.Controllers;
 
 import com.example.parcialfinal.Models.Medico;
-import com.example.parcialfinal.Repository.UsuarioRepository;
+import com.example.parcialfinal.Repository.MedicoRepository;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -33,7 +33,7 @@ public class RegistroMedicoController {
     private TableColumn<Medico, String> colEspecialidad
             ;
     @FXML
-    private TableView<Medico> tablaUsuarios;
+    private TableView<Medico> tablaMedicos;
     @FXML
     private TextField txtCorreo;
 
@@ -67,7 +67,7 @@ public class RegistroMedicoController {
                     boolean isSelected = newValue != null;
                     btnEliminar.setDisable(!isSelected);
                     btnModificar.setDisable(!isSelected);
-                    mostrarUsuario(newValue);
+                    mostrarMedico(newValue);
                     txtId.setDisable(isSelected);
                 }
         );
@@ -80,8 +80,8 @@ public class RegistroMedicoController {
         colCorreo.setCellValueFactory(new PropertyValueFactory<>("email"));
         colEspecialidad.setCellValueFactory(new PropertyValueFactory<>("especialidad"));
     }
-    private void cargarUsuarios() {
-        medicosObservable = medicoRepository.getUsuarios();
+    private void cargarMedicos() {
+        medicosObservable = medicoRepository.getMedicos();
         tablaMedicos.setItemsmedico(medicosObservable);
     }
 
@@ -105,7 +105,8 @@ public class RegistroMedicoController {
             String name = txtNombre.getText();
             String phone = txtTel.getText();
             String email = txtCorreo.getText();
-            Medico medico = new Medico(id, name, phone, email);
+            String especialidad = txtEspecialidad.getText();
+            Medico medico = new Medico(id, name, phone, email , especialidad);
             medicoRepository.addMedico(medico);
             tablaMedicos.refresh();
             mostrarAlerta("Éxito", "Medico agregado correctamente.", Alert.AlertType.INFORMATION);
