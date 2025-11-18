@@ -10,7 +10,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.util.Optional;
 
-public class UsuariosController {
+public class RegistroMedicoController {
     @FXML
     private Button btnAgregar;
 
@@ -28,6 +28,10 @@ public class UsuariosController {
 
     @FXML
     private TableColumn<Medico, String> colNombre;
+
+    @FXML
+    private TableColumn<Medico, String> colEspecialidad
+            ;
     @FXML
     private TableView<Medico> tablaUsuarios;
     @FXML
@@ -42,20 +46,23 @@ public class UsuariosController {
     @FXML
     private TextField txtTel;
 
+    @FXML
+    private TextField txtEspecialidad;
+
 
     @FXML
     private TableColumn<Medico, String> colTel;
     private AnchorPane panelContenido;
-    private UsuarioRepository usuarioRepository;
-    private ObservableList<Medico> usuariosObservable;
+    private MedicoRepository medicoRepository;
+    private ObservableList<Medico> medicosObservable;
     @FXML
     public void initialize() {
-        usuarioRepository = UsuarioRepository.getInstancia();
+        medicoRepository = MedicoRepository.getInstancia();
         configurarTabla();
-        cargarUsuarios();
+        cargarMedicos();
         btnEliminar.setDisable(true);
         btnModificar.setDisable(true);
-        tablaUsuarios.getSelectionModel().selectedItemProperty().addListener(
+        tablaMedicos.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     boolean isSelected = newValue != null;
                     btnEliminar.setDisable(!isSelected);
@@ -71,10 +78,11 @@ public class UsuariosController {
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colTel.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         colCorreo.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colEspecialidad.setCellValueFactory(new PropertyValueFactory<>("especialidad"));
     }
     private void cargarUsuarios() {
-        usuariosObservable = usuarioRepository.getUsuarios();
-        tablaUsuarios.setItems(usuariosObservable);
+        medicosObservable = medicoRepository.getUsuarios();
+        tablaMedicos.setItemsmedico(medicosObservable);
     }
 
     private void limpiarCampos() {
@@ -83,7 +91,7 @@ public class UsuariosController {
         txtTel.clear();
         txtCorreo.clear();
         txtId.setDisable(false);
-        tablaUsuarios.getSelectionModel().clearSelection();
+        tablaMedicos.getSelectionModel().clearSelection();
     }
 
     @FXML
@@ -98,19 +106,19 @@ public class UsuariosController {
             String phone = txtTel.getText();
             String email = txtCorreo.getText();
             Medico medico = new Medico(id, name, phone, email);
-            usuarioRepository.addUsuario(medico);
-            tablaUsuarios.refresh();
-            mostrarAlerta("Éxito", "Usuario agregado correctamente.", Alert.AlertType.INFORMATION);
+            medicoRepository.addMedico(medico);
+            tablaMedicos.refresh();
+            mostrarAlerta("Éxito", "Medico agregado correctamente.", Alert.AlertType.INFORMATION);
             limpiarCampos();
         } catch (Exception e) {
-            mostrarAlerta("Error", "Error al agregar el usuario: " + e.getMessage(), Alert.AlertType.ERROR);
+            mostrarAlerta("Error", "Error al agregar el medico: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
 
     private boolean validarCampos() {
         if(txtId.getText().isEmpty() || txtNombre.getText().isEmpty() || txtTel.getText().isEmpty()||
-                txtCorreo.getText().isEmpty()) {
+                txtCorreo.getText().isEmpty() || txtEspecialidad.getText().isEmpty()) {
             mostrarAlerta("Error", "Todos los campos deben ser diligenciados obligatoriamente.", Alert.AlertType.WARNING);
             return false;
         } return true;
@@ -118,39 +126,40 @@ public class UsuariosController {
 
     @FXML
     void onEliminar() {
-        Medico medico = tablaUsuarios.getSelectionModel().getSelectedItem();
+        Medico medico = tablaMedicos.getSelectionModel().getSelectedItem();
         if(medico == null){
-            mostrarAlerta("Error", "Seleccione un usuario para eliminar.", Alert.AlertType.WARNING);
+            mostrarAlerta("Error", "Seleccione un medico para eliminar.", Alert.AlertType.WARNING);
             return;
         }
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("Confirmar eliminación");
         confirmacion.setHeaderText("¿Estás seguro?");
-        confirmacion.setContentText("¿Deseas eliminar el usuario: " + medico.getNombre() + "?");
+        confirmacion.setContentText("¿Deseas eliminar el medico: " + medico.getNombre() + "?");
 
         Optional<ButtonType> resultado = confirmacion.showAndWait();
         if(resultado.isPresent() && resultado.get() == ButtonType.OK){
             try{
-                usuarioRepository.removeUsuario(medico);
-                usuariosObservable.remove(medico);
-                tablaUsuarios.refresh();
-                mostrarAlerta("Exito", "usuario eliminado correctamente.", Alert.AlertType.INFORMATION);
+                medicoRepository.removeMedico(medico);
+                medicosObservable.remove(medico);
+                tablaMedicos.refresh();
+                mostrarAlerta("Exito", "medico eliminado correctamente.", Alert.AlertType.INFORMATION);
                 limpiarCampos();
             } catch (Exception e) {
-                mostrarAlerta("Exito", "Error al eliminar el usuario: "+ e.getMessage(), Alert.AlertType.ERROR);
+                mostrarAlerta("Exito", "Error al eliminar el medico: "+ e.getMessage(), Alert.AlertType.ERROR);
             }
         }
     }
     public void actualizarTabla() {
-        cargarUsuarios();
+        cargarMedicos();
     }
 
-    private void mostrarUsuario(Medico medico) {
+    private void mostrarMedico(Medico medico) {
         if(medico != null){
             txtId.setText(medico.getId());
             txtNombre.setText(medico.getNombre());
             txtTel.setText(medico.getTelefono());
             txtCorreo.setText(medico.getEmail());
+            txtEspecialidad.setText(medico.getEspecialidad());
             txtId.setDisable(true);
         } else {
             limpiarCampos();
@@ -163,9 +172,9 @@ public class UsuariosController {
         if(!validarCampos()){
             return;
         }
-        Medico medico = tablaUsuarios.getSelectionModel().getSelectedItem();
+        Medico medico = tablaMedicos.getSelectionModel().getSelectedItem();
         if(medico == null){
-            mostrarAlerta("Error", "Seleccione un usuario para modificar.", Alert.AlertType.WARNING);
+            mostrarAlerta("Error", "Seleccione un medico para modificar.", Alert.AlertType.WARNING);
             return;
         }
         try{
@@ -173,11 +182,11 @@ public class UsuariosController {
             medico.setTelefono(txtTel.getText());
             medico.setEmail(txtCorreo.getText());
             actualizarTabla();
-            tablaUsuarios.refresh();
-            mostrarAlerta("Éxito", "usuario modificado correctamente.", Alert.AlertType.INFORMATION);
+            tablaMedicos.refresh();
+            mostrarAlerta("Éxito", "medico modificado correctamente.", Alert.AlertType.INFORMATION);
             limpiarCampos();
         } catch (Exception e) {
-            mostrarAlerta("Error", "Error al modificar el usuario: " + e.getMessage(), Alert.AlertType.ERROR);
+            mostrarAlerta("Error", "Error al modificar el medico: " + e.getMessage(), Alert.AlertType.ERROR);
         }
 
 
