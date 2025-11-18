@@ -3,7 +3,7 @@ package com.example.parcialfinal.Controllers;
 
 import com.example.parcialfinal.Models.Paciente;
 import com.example.parcialfinal.Models.Usuario;
-import com.example.parcialfinal.Models.DetallePrestamo;
+import com.example.parcialfinal.Models.Citas;
 import com.example.parcialfinal.Repository.LibroRepository;
 import com.example.parcialfinal.Repository.UsuarioRepository;
 import javafx.collections.FXCollections;
@@ -25,15 +25,15 @@ public class PrestamosController {
     @FXML
     private ComboBox<Paciente> cmbLibro;
     @FXML
-    private TableColumn<DetallePrestamo, Integer> colCantidad;
+    private TableColumn<Citas, Integer> colCantidad;
     @FXML
-    private TableColumn<DetallePrestamo, String> colUsuario;
+    private TableColumn<Citas, String> colUsuario;
     @FXML
-    private TableColumn<DetallePrestamo, String> colLibro;
+    private TableColumn<Citas, String> colLibro;
     @FXML
-    private TableColumn<DetallePrestamo, LocalDate> colFecha;
+    private TableColumn<Citas, LocalDate> colFecha;
     @FXML
-    private TableColumn<DetallePrestamo, Double> colSubtotal;
+    private TableColumn<Citas, Double> colSubtotal;
     @FXML
     private Spinner<Integer> spinnerCantidad;
     @FXML
@@ -44,8 +44,8 @@ public class PrestamosController {
     private Label lblSubtotal;
 
     @FXML
-    private TableView<DetallePrestamo> tablaPrestamos;
-    private ObservableList<DetallePrestamo> listaPrestamos;
+    private TableView<Citas> tablaPrestamos;
+    private ObservableList<Citas> listaPrestamos;
     private LibroRepository libroRepository;
     private UsuarioRepository usuarioRepository;
     private double precioUnitario = 0.0;
@@ -159,7 +159,7 @@ public class PrestamosController {
             int nuevoStock = paciente.getStock()-cantidad;
             paciente.setStock(nuevoStock);
             double subtotal = precioUnitario*cantidad;
-            DetallePrestamo detalle = new DetallePrestamo(
+            Citas detalle = new Citas(
                     LocalDate.now(),
                     usuario.getNombre(),
                     paciente.getNombre(),

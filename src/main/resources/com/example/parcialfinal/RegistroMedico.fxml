@@ -14,11 +14,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.parcialfinal.Controllers.UsuariosController">
+<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.parcialfinal.Controllers.RegistroMedicoController">
     <children>
         <HBox prefHeight="86.0" prefWidth="600.0">
             <children>
-                <Label text="Registro de Usuarios">
+                <Label text="Registro de Medicos">
                     <font>
                         <Font name="System Bold" size="30.0" />
                     </font>
@@ -42,6 +42,7 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
                                 <Label text="Cédula" />
@@ -52,6 +53,8 @@
                                 <TextField fx:id="txtNombre" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <TextField fx:id="txtTel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                 <TextField fx:id="txtCorreo" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="Especialidad" GridPane.rowIndex="4" />
+                        <TextField fx:id="txtEspecialidad" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                             </children>
                         </GridPane>
                         <VBox prefHeight="132.0" prefWidth="214.0">
@@ -82,12 +85,13 @@
                 </HBox>
                 <HBox prefHeight="204.0" prefWidth="600.0">
                     <children>
-                        <TableView fx:id="tablaUsuarios" prefHeight="182.0" prefWidth="567.0">
+                        <TableView fx:id="tablaUsuarios" prefHeight="199.0" prefWidth="560.0">
                             <columns>
                                 <TableColumn fx:id="colId" prefWidth="116.00006103515625" text="Cédula" />
                                 <TableColumn fx:id="colNombre" prefWidth="131.99993896484375" text="Nombre" />
                                 <TableColumn fx:id="colTel" prefWidth="127.20001220703125" text="Teléfono" />
-                                <TableColumn fx:id="colCorreo" prefWidth="187.199951171875" text="Correo" />
+                                <TableColumn fx:id="colCorreo" prefWidth="90.4000244140625" text="Correo" />
+                        <TableColumn fx:id="colEspecialidad" prefWidth="92.800048828125" text="Especialidad" />
                             </columns>
                         </TableView>
                     </children>

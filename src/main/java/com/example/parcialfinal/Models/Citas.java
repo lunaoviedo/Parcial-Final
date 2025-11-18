@@ -2,17 +2,17 @@ package com.example.parcialfinal.Models;
 
 import java.time.LocalDate;
 
-public class DetallePrestamo {
+public class Citas {
     private String fecha;
     private String usuario;
-    private String libro;
+    private String medico;
     private int cantidad;
     private double subtotal;
 
-    public DetallePrestamo(LocalDate fecha, String usuario, String libro, int cantidad, double subtotal) {
+    public Citas(LocalDate fecha, String usuario, String medico, int cantidad, double subtotal) {
         this.fecha = fecha.toString();
         this.usuario = usuario;
-        this.libro = libro;
+        this.medico = medico;
         this.cantidad = cantidad;
         this.subtotal = subtotal;
     }
@@ -25,8 +25,8 @@ public class DetallePrestamo {
         return usuario;
     }
 
-    public String getLibro() {
-        return libro;
+    public String getMedico() {
+        return medico;
     }
 
     public double getSubtotal() {

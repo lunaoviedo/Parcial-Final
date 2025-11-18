@@ -3,10 +3,8 @@ package com.example.parcialfinal.Controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
@@ -30,14 +28,14 @@ public class GeneralController{
     @FXML
     void onUsuarios() throws IOException {
         AnchorPane panelConsultarUsuarios = FXMLLoader.load(
-                getClass().getResource("/com/example/parcialfinal/RegistroUsuarios.fxml"));
+                getClass().getResource("/com/example/parcialfinal/RegistroMedico.fxml"));
         panelContenido.getChildren().clear();
         panelContenido.getChildren().add(panelConsultarUsuarios);
     }
     @FXML
     void onLibros() throws IOException {
         AnchorPane panelConsultarLibros = FXMLLoader.load(
-                getClass().getResource("/com/example/parcialfinal/RegistroLibros.fxml"));
+                getClass().getResource("/com/example/parcialfinal/RegistroClientes.fxml"));
         panelContenido.getChildren().clear();
         panelContenido.getChildren().add(panelConsultarLibros);
 
@@ -46,7 +44,7 @@ public class GeneralController{
     @FXML
     void onPrestamos() throws IOException {
         AnchorPane panelConsultarPrestamos = FXMLLoader.load(
-                getClass().getResource("/com/example/parcialfinal/RegistroPrestamos.fxml"));
+                getClass().getResource("/com/example/parcialfinal/RegistroCitas.fxml"));
         panelContenido.getChildren().clear();
         panelContenido.getChildren().add(panelConsultarPrestamos);
 

@@ -10,7 +10,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.util.Optional;
 
-public class UsuariosController {
+public class RegistroMedicoController {
     @FXML
     private Button btnAgregar;
 
@@ -29,7 +29,9 @@ public class UsuariosController {
     @FXML
     private TableColumn<Usuario, String> colNombre;
     @FXML
-    private TableView<Usuario> tablaUsuarios;
+    private TableView<Usuario> tablaMedicos;
+    @FXML
+    private TableColumn<Usuario,String> colEspcialidad;
     @FXML
     private TextField txtCorreo;
 
@@ -42,15 +44,19 @@ public class UsuariosController {
     @FXML
     private TextField txtTel;
 
+    @FXML
+    private TextField txtEspcialidad;
 
     @FXML
     private TableColumn<Usuario, String> colTel;
+
+
     private AnchorPane panelContenido;
-    private UsuarioRepository usuarioRepository;
-    private ObservableList<Usuario> usuariosObservable;
+    private MedicoRepository medicoRepository;
+    private ObservableList<Medico> MedicosObservable;
     @FXML
     public void initialize() {
-        usuarioRepository = UsuarioRepository.getInstancia();
+        medicoRepository = MedicoRepository.getInstancia();
         configurarTabla();
         cargarUsuarios();
         btnEliminar.setDisable(true);
@@ -71,10 +77,11 @@ public class UsuariosController {
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colTel.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         colCorreo.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colEspcialidad.setCellValueFactory(new PropertyValueFactory<>("especialidad"));
     }
     private void cargarUsuarios() {
-        usuariosObservable = usuarioRepository.getUsuarios();
-        tablaUsuarios.setItems(usuariosObservable);
+        medicoObservable = medicoRepository.getUsuarios();
+        tablaMedicos.setItems(medicoObservable);
     }
 
     private void limpiarCampos() {
