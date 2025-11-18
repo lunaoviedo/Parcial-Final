@@ -105,7 +105,7 @@ public class RegistroMedicoController {
             String phone = txtTel.getText();
             String email = txtCorreo.getText();
             Medico medico = new Medico(id, name, phone, email);
-            medicoRepository.addUsuario(usuario);
+            medicoRepository.addMedico(medico);
             tablaMedicosMedicos.refresh();
             mostrarAlerta("Éxito", "Medico agregado correctamente.", Alert.AlertType.INFORMATION);
             limpiarCampos();
@@ -127,13 +127,13 @@ public class RegistroMedicoController {
     void onEliminar() {
         Medico medico = tablaMedicos.getSelectionModel().getSelectedItem();
         if(medico == null){
-            mostrarAlerta("Error", "Seleccione un usuario para eliminar.", Alert.AlertType.WARNING);
+            mostrarAlerta("Error", "Seleccione un medico para eliminar.", Alert.AlertType.WARNING);
             return;
         }
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("Confirmar eliminación");
         confirmacion.setHeaderText("¿Estás seguro?");
-        confirmacion.setContentText("¿Deseas eliminar el usuario: " + medico.getNombre() + "?");
+        confirmacion.setContentText("¿Deseas eliminar el medico: " + medico.getNombre() + "?");
 
         Optional<ButtonType> resultado = confirmacion.showAndWait();
         if(resultado.isPresent() && resultado.get() == ButtonType.OK){
@@ -153,7 +153,7 @@ public class RegistroMedicoController {
     }
 
     private void mostrarMedico(Medico medico) {
-        if(usuario != null){
+        if(medico != null){
             txtId.setText(medico.getId());
             txtNombre.setText(medico.getNombre());
             txtTel.setText(medico.getTelefono());
