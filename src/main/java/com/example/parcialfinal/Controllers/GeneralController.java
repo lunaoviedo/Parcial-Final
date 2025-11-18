@@ -26,14 +26,14 @@ public class GeneralController{
     private AnchorPane panelContenido;
 
     @FXML
-    void onUsuarios() throws IOException {
+    void onMedicos() throws IOException {
         AnchorPane panelConsultarUsuarios = FXMLLoader.load(
                 getClass().getResource("/com/example/parcialfinal/RegistroMedico.fxml"));
         panelContenido.getChildren().clear();
         panelContenido.getChildren().add(panelConsultarUsuarios);
     }
     @FXML
-    void onLibros() throws IOException {
+    void onPacientes() throws IOException {
         AnchorPane panelConsultarLibros = FXMLLoader.load(
                 getClass().getResource("/com/example/parcialfinal/RegistroPacientes.fxml"));
         panelContenido.getChildren().clear();
@@ -42,7 +42,7 @@ public class GeneralController{
     }
 
     @FXML
-    void onPrestamos() throws IOException {
+    void onCitas() throws IOException {
         AnchorPane panelConsultarPrestamos = FXMLLoader.load(
                 getClass().getResource("/com/example/parcialfinal/RegistroCitas.fxml"));
         panelContenido.getChildren().clear();

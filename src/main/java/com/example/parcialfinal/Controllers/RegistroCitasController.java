@@ -68,7 +68,7 @@ public class RegistroCitasController {
         lblPrecio.setText("$ 0.00");
     }
     private void configListeners() {
-        cmbPacientre.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        cmbPaciente.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){
                 precioUnitario = newValue.getPaciente();
                 int stock = newValue.getStock();
@@ -147,7 +147,7 @@ public class RegistroCitasController {
             return;
         }
         int cantidad = spinnerCantidad.getValue();
-        if (cantidad > libro.getStock()) {
+        if (cantidad > paciente.getStock()) {
             mostrarAlerta("Error de Stock", "No hay suficiente stock. Disponible: " + paciente.getStock(), Alert.AlertType.ERROR);
             return;
         } try{
