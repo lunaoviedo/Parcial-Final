@@ -2,7 +2,7 @@ package com.example.parcialfinal.Controllers;
 
 
 import com.example.parcialfinal.Models.Libro;
-import com.example.parcialfinal.Models.Usuario;
+import com.example.parcialfinal.Models.Medico;
 import com.example.parcialfinal.Models.DetallePrestamo;
 import com.example.parcialfinal.Repository.LibroRepository;
 import com.example.parcialfinal.Repository.UsuarioRepository;
@@ -21,7 +21,7 @@ public class PrestamosController {
     @FXML
     private Button btnVender;
     @FXML
-    private ComboBox<Usuario> cmbUsuario;
+    private ComboBox<Medico> cmbUsuario;
     @FXML
     private ComboBox<Libro> cmbLibro;
     @FXML
@@ -113,13 +113,13 @@ public class PrestamosController {
     private void cargarUsuarios() {
         cmbUsuario.setItems(FXCollections.observableArrayList(usuarioRepository.getUsuarios()));
 
-        cmbUsuario.setConverter(new StringConverter<Usuario>() {
+        cmbUsuario.setConverter(new StringConverter<Medico>() {
             @Override
-            public String toString(Usuario usuario) {
-                return (usuario != null) ? usuario.getNombre() : "";
+            public String toString(Medico medico) {
+                return (medico != null) ? medico.getNombre() : "";
             }
             @Override
-            public Usuario fromString(String string) {
+            public Medico fromString(String string) {
                 return null;
             }
         });
@@ -141,8 +141,8 @@ public class PrestamosController {
 
     @FXML
     void onPrestar(ActionEvent event) {
-        Usuario usuario = cmbUsuario.getSelectionModel().getSelectedItem();
-        if(usuario == null){
+        Medico medico = cmbUsuario.getSelectionModel().getSelectedItem();
+        if(medico == null){
             mostrarAlerta("Error de Prestamo", "Debe seleccionar un usuario.", Alert.AlertType.WARNING);
             return;
         }
@@ -161,7 +161,7 @@ public class PrestamosController {
             double subtotal = precioUnitario*cantidad;
             DetallePrestamo detalle = new DetallePrestamo(
                     LocalDate.now(),
-                    usuario.getNombre(),
+                    medico.getNombre(),
                     libro.getNombre(),
                     cantidad,
                     subtotal

@@ -1,6 +1,6 @@
 package com.example.parcialfinal.Controllers;
 
-import com.example.parcialfinal.Models.Usuario;
+import com.example.parcialfinal.Models.Medico;
 import com.example.parcialfinal.Repository.UsuarioRepository;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,15 +21,15 @@ public class UsuariosController {
     private Button btnModificar;
 
     @FXML
-    private TableColumn<Usuario,String> colCorreo;
+    private TableColumn<Medico,String> colCorreo;
 
     @FXML
-    private TableColumn<Usuario, String> colId;
+    private TableColumn<Medico, String> colId;
 
     @FXML
-    private TableColumn<Usuario, String> colNombre;
+    private TableColumn<Medico, String> colNombre;
     @FXML
-    private TableView<Usuario> tablaUsuarios;
+    private TableView<Medico> tablaUsuarios;
     @FXML
     private TextField txtCorreo;
 
@@ -44,10 +44,10 @@ public class UsuariosController {
 
 
     @FXML
-    private TableColumn<Usuario, String> colTel;
+    private TableColumn<Medico, String> colTel;
     private AnchorPane panelContenido;
     private UsuarioRepository usuarioRepository;
-    private ObservableList<Usuario> usuariosObservable;
+    private ObservableList<Medico> usuariosObservable;
     @FXML
     public void initialize() {
         usuarioRepository = UsuarioRepository.getInstancia();
@@ -97,8 +97,8 @@ public class UsuariosController {
             String name = txtNombre.getText();
             String phone = txtTel.getText();
             String email = txtCorreo.getText();
-            Usuario usuario = new Usuario(id, name, phone, email);
-            usuarioRepository.addUsuario(usuario);
+            Medico medico = new Medico(id, name, phone, email);
+            usuarioRepository.addUsuario(medico);
             tablaUsuarios.refresh();
             mostrarAlerta("Éxito", "Usuario agregado correctamente.", Alert.AlertType.INFORMATION);
             limpiarCampos();
@@ -118,21 +118,21 @@ public class UsuariosController {
 
     @FXML
     void onEliminar() {
-        Usuario usuario = tablaUsuarios.getSelectionModel().getSelectedItem();
-        if(usuario == null){
+        Medico medico = tablaUsuarios.getSelectionModel().getSelectedItem();
+        if(medico == null){
             mostrarAlerta("Error", "Seleccione un usuario para eliminar.", Alert.AlertType.WARNING);
             return;
         }
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("Confirmar eliminación");
         confirmacion.setHeaderText("¿Estás seguro?");
-        confirmacion.setContentText("¿Deseas eliminar el usuario: " + usuario.getNombre() + "?");
+        confirmacion.setContentText("¿Deseas eliminar el usuario: " + medico.getNombre() + "?");
 
         Optional<ButtonType> resultado = confirmacion.showAndWait();
         if(resultado.isPresent() && resultado.get() == ButtonType.OK){
             try{
-                usuarioRepository.removeUsuario(usuario);
-                usuariosObservable.remove(usuario);
+                usuarioRepository.removeUsuario(medico);
+                usuariosObservable.remove(medico);
                 tablaUsuarios.refresh();
                 mostrarAlerta("Exito", "usuario eliminado correctamente.", Alert.AlertType.INFORMATION);
                 limpiarCampos();
@@ -145,12 +145,12 @@ public class UsuariosController {
         cargarUsuarios();
     }
 
-    private void mostrarUsuario(Usuario usuario) {
-        if(usuario != null){
-            txtId.setText(usuario.getId());
-            txtNombre.setText(usuario.getNombre());
-            txtTel.setText(usuario.getTelefono());
-            txtCorreo.setText(usuario.getEmail());
+    private void mostrarUsuario(Medico medico) {
+        if(medico != null){
+            txtId.setText(medico.getId());
+            txtNombre.setText(medico.getNombre());
+            txtTel.setText(medico.getTelefono());
+            txtCorreo.setText(medico.getEmail());
             txtId.setDisable(true);
         } else {
             limpiarCampos();
@@ -163,15 +163,15 @@ public class UsuariosController {
         if(!validarCampos()){
             return;
         }
-        Usuario usuario = tablaUsuarios.getSelectionModel().getSelectedItem();
-        if(usuario == null){
+        Medico medico = tablaUsuarios.getSelectionModel().getSelectedItem();
+        if(medico == null){
             mostrarAlerta("Error", "Seleccione un usuario para modificar.", Alert.AlertType.WARNING);
             return;
         }
         try{
-            usuario.setNombre(txtNombre.getText());
-            usuario.setTelefono(txtTel.getText());
-            usuario.setEmail(txtCorreo.getText());
+            medico.setNombre(txtNombre.getText());
+            medico.setTelefono(txtTel.getText());
+            medico.setEmail(txtCorreo.getText());
             actualizarTabla();
             tablaUsuarios.refresh();
             mostrarAlerta("Éxito", "usuario modificado correctamente.", Alert.AlertType.INFORMATION);
