@@ -27,26 +27,26 @@ public class GeneralController{
 
     @FXML
     void onMedicos() throws IOException {
-        AnchorPane panelConsultarUsuarios = FXMLLoader.load(
+        AnchorPane panelConsultarMedicos = FXMLLoader.load(
                 getClass().getResource("/com/example/parcialfinal/RegistroMedico.fxml"));
         panelContenido.getChildren().clear();
-        panelContenido.getChildren().add(panelConsultarUsuarios);
+        panelContenido.getChildren().add(panelConsultarMedicos);
     }
     @FXML
     void onPacientes() throws IOException {
-        AnchorPane panelConsultarLibros = FXMLLoader.load(
+        AnchorPane panelConsultarPacientes = FXMLLoader.load(
                 getClass().getResource("/com/example/parcialfinal/RegistroPacientes.fxml"));
         panelContenido.getChildren().clear();
-        panelContenido.getChildren().add(panelConsultarLibros);
+        panelContenido.getChildren().add(panelConsultarPacientes);
 
     }
 
     @FXML
     void onCitas() throws IOException {
-        AnchorPane panelConsultarPrestamos = FXMLLoader.load(
+        AnchorPane panelConsultarCitas = FXMLLoader.load(
                 getClass().getResource("/com/example/parcialfinal/RegistroCitas.fxml"));
         panelContenido.getChildren().clear();
-        panelContenido.getChildren().add(panelConsultarPrestamos);
+        panelContenido.getChildren().add(panelConsultarCitas);
 
     }
 

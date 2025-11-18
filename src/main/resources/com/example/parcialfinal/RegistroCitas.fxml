@@ -54,7 +54,7 @@
                                 <Label text="Precio:" GridPane.rowIndex="5" />
                                 <ComboBox fx:id="cmbMedico" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                 <ComboBox fx:id="cmbPaciente" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                <Spinner fx:id="spinnerCantidad" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                <Spinner fx:id="spinnerPrecio" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                 <Label text="Fecha:" />
                                 <Label fx:id="lblHora" text="11/11/2025" GridPane.columnIndex="1" />
                         <DatePicker fx:id="datePicker" GridPane.columnIndex="1" />
@@ -64,7 +64,7 @@
                         </GridPane>
                         <VBox prefHeight="132.0" prefWidth="214.0">
                             <children>
-                                <Button fx:id="btnCitar" mnemonicParsing="false" onAction="#onPrestar" prefHeight="26.0" prefWidth="70.0" text="Citar">
+                                <Button fx:id="btnCitar" mnemonicParsing="false" onAction="#onCitar" prefHeight="26.0" prefWidth="70.0" text="Citar">
                                     <VBox.margin>
                                         <Insets bottom="20.0" />
                                     </VBox.margin>

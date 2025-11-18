@@ -3,37 +3,38 @@ package com.example.parcialfinal.Models;
 import java.time.LocalDate;
 
 public class Citas {
-    private String fecha;
-    private String usuario;
-    private String medico;
-    private int cantidad;
-    private double subtotal;
 
-    public Citas(LocalDate fecha, String usuario, String medico, int cantidad, double subtotal) {
-        this.fecha = fecha.toString();
-        this.usuario = usuario;
+    private LocalDate fecha;
+    private String hora;
+    private String medico;
+    private String paciente;
+    private double precio;
+
+    public Citas(LocalDate fecha, String hora, String medico, String paciente, double precio) {
+        this.fecha = fecha;
+        this.hora = hora;
         this.medico = medico;
-        this.cantidad = cantidad;
-        this.subtotal = subtotal;
+        this.paciente = paciente;
+        this.precio = precio;
     }
 
-    public String getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getHora() {
+        return hora;
     }
 
     public String getMedico() {
         return medico;
     }
 
-    public double getSubtotal() {
-        return subtotal;
+    public String getPaciente() {
+        return paciente;
     }
 
-    public int getCantidad() {
-        return cantidad;
+    public double getPrecio() {
+        return precio;
     }
 }

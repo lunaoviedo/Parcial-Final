@@ -133,7 +133,7 @@ public class PacienteController {
         Optional<ButtonType> resultado = confirmacion.showAndWait();
         if(resultado.isPresent() && resultado.get() == ButtonType.OK){
             try{
-                pacienteRepository.eliminarLibro(paciente);
+                pacienteRepository.eliminarPaciente(paciente);
                 cargarPacientes();
                 mostrarAlerta("Exito", "paciente eliminado correctamente.", Alert.AlertType.INFORMATION);
                 limpiarCampos();

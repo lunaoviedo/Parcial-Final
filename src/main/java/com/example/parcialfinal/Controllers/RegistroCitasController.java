@@ -1,6 +1,5 @@
 package com.example.parcialfinal.Controllers;
 
-
 import com.example.parcialfinal.Models.Citas;
 import com.example.parcialfinal.Models.Paciente;
 import com.example.parcialfinal.Models.Medico;
@@ -8,175 +7,140 @@ import com.example.parcialfinal.Repository.PacienteRepository;
 import com.example.parcialfinal.Repository.MedicoRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.util.StringConverter;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.event.ActionEvent;
+import javafx.util.StringConverter;
+
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class RegistroCitasController {
-    @FXML
-    private Button btnCitar;
-    @FXML
-    private ComboBox<Medico> cmbMedico;
-    @FXML
-    private ComboBox<Paciente> cmbPaciente;
-    @FXML
-    private TableColumn<Citas, Integer> colPrecio;
-    @FXML
-    private TableColumn<Citas, String> colMedico;
-    @FXML
-    private TableColumn<Citas, String> colPaciente;
-    @FXML
-    private TableColumn<Citas, Date> colFecha;
-    @FXML
-    private TableColumn<Citas, String> colHora;
-    @FXML
-    private Spinner<Double> spinnerPrecio;
-    @FXML
-    private TextField txtHora;
-    @FXML
-    private Label lblPrecio;
 
+    @FXML private ComboBox<Medico> cmbMedico;
+    @FXML private ComboBox<Paciente> cmbPaciente;
+    @FXML private Spinner<Double> spinnerPrecio;
+    @FXML private TextField txtHora;
+    @FXML private DatePicker datePicker;
 
-    @FXML
-    private TableView<Citas> tablaCitas;
+    @FXML private TableView<Citas> tablaCitas;
+    @FXML private TableColumn<Citas, LocalDate> colFecha;
+    @FXML private TableColumn<Citas, String> colHora;
+    @FXML private TableColumn<Citas, String> colMedico;
+    @FXML private TableColumn<Citas, String> colPaciente;
+    @FXML private TableColumn<Citas, Double> colPrecio;
+
+    @FXML private Label lblPrecio;
+
     private ObservableList<Citas> listaCitas;
-    private PacienteRepository PacienteRepository;
+    private PacienteRepository pacienteRepository;
     private MedicoRepository medicoRepository;
-    private double precioUnitario = 0.0;
 
     @FXML
     public void initialize() {
         pacienteRepository = PacienteRepository.getInstancia();
         medicoRepository = MedicoRepository.getInstancia();
         listaCitas = FXCollections.observableArrayList();
-        configurarTabla();
-        inicializarComponentes();
-        configListeners();
-    }
 
-    @FXML
-    public void inicializarComponentes() {
+        configurarTabla();
         cargarMedicos();
         cargarPacientes();
-        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1, 1);
-        spinnerPrecio.setValueFactory(valueFactory);
-        lblPrecio.setText("$ 0.00");
+        configurarSpinnerPrecio();
     }
-    private void configListeners() {
-        cmbPaciente.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null){
-                precioUnitario = newValue.getPaciente();
-                int stock = newValue.getStock();
-                lblPrecio.setText("$ "+ String.format("%.2f", precioUnitario));
-                actualizarSpinner(stock);
-                calcularSubtotal();
 
-            } else{
-                lblPrecio.setText("$ 0.00");
-                precioUnitario = 0.0;
-                actualizarSpinner(1);
-            }
+    private void configurarSpinnerPrecio() {
+        SpinnerValueFactory<Double> factory =
+                new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999, 0, 5);
+        spinnerPrecio.setValueFactory(factory);
+
+        spinnerPrecio.valueProperty().addListener((obs, oldV, newV) -> {
+            lblPrecio.setText("$ " + String.format("%.2f", newV));
         });
-        spinnerPrecio.valueProperty().addListener((observable, oldValue, newValue) -> {
-            calcularSubtotal();
-        });
-
-    }
-
-    private void actualizarSpinner(int stock){
-        SpinnerValueFactory.IntegerSpinnerValueFactory factory= (SpinnerValueFactory.IntegerSpinnerValueFactory) spinnerCantidad.getValueFactory();
-        factory.setMax(Math.max(1, stock));
-        if(spinnerPrecio.getValue()>stock){
-            spinnerPrecio.getValueFactory().setValue(stock);
-        }
-    }
-    private void calcularSubtotal() {
-        if (precioUnitario > 0 && spinnerPrecio.getValue() != null) {
-            int cantidad = spinnerPrecio.getValue();
-            double subtotal = precioUnitario * cantidad;
-            lblSubtotal.setText("$ " + String.format("%.2f", subtotal));
-        } else {
-            lblSubtotal.setText("$ 0.00");
-        }
     }
 
     private void cargarMedicos() {
-        cmbMedico.setItems(FXCollections.observableArrayList(medicoRepository.getMedicos()));
+        cmbMedico.setItems(medicoRepository.getMedicos());
 
         cmbMedico.setConverter(new StringConverter<Medico>() {
             @Override
-            public String toString(Medico medico) {
-                return (medico != null) ? medico.getNombre() : "";
+            public String toString(Medico m) {
+                return (m == null) ? "" : m.getNombre();
             }
             @Override
-            public Medico fromString(String string) {
-                return null;
-            }
+            public Medico fromString(String s) { return null; }
         });
     }
+
     private void cargarPacientes() {
-        cmbPaciente.setItems(FXCollections.observableArrayList(pacienteRepository.getPacientes()));
+        cmbPaciente.setItems((ObservableList<Paciente>) pacienteRepository.getPacientes());
+
         cmbPaciente.setConverter(new StringConverter<Paciente>() {
             @Override
-            public String toString(Paciente paciente) {
-                return (paciente != null) ? paciente.getNombre(): "";
+            public String toString(Paciente p) {
+                return (p == null) ? "" : p.getNombre();
             }
-
             @Override
-            public Paciente fromString(String s) {
-                return null;
-            }
+            public Paciente fromString(String s) { return null; }
         });
+    }
+
+    private void configurarTabla() {
+        tablaCitas.setItems(listaCitas);
+
+        colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+        colHora.setCellValueFactory(new PropertyValueFactory<>("hora"));
+        colMedico.setCellValueFactory(new PropertyValueFactory<>("medico"));
+        colPaciente.setCellValueFactory(new PropertyValueFactory<>("paciente"));
+        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
     }
 
     @FXML
-    void onPrestar(ActionEvent event) {
+    void onCitar(ActionEvent event) {
         Medico medico = cmbMedico.getSelectionModel().getSelectedItem();
-        if(medico == null){
-            mostrarAlerta("Error de citación", "Debe seleccionar un medico.", Alert.AlertType.WARNING);
-            return;
-        }
         Paciente paciente = cmbPaciente.getSelectionModel().getSelectedItem();
+        LocalDate fecha = datePicker.getValue();
+        String hora = txtHora.getText();
+        double precio = spinnerPrecio.getValue();
+
+        if (medico == null) {
+            mostrarAlerta("Error", "Debe seleccionar un médico.", Alert.AlertType.WARNING);
+            return;
+        }
         if (paciente == null) {
-            mostrarAlerta("Error de citación", "Debe seleccionar un paciente.", Alert.AlertType.WARNING);
+            mostrarAlerta("Error", "Debe seleccionar un paciente.", Alert.AlertType.WARNING);
             return;
         }
-        int cantidad = spinnerCantidad.getValue();
-        if (cantidad > paciente.getStock()) {
-            mostrarAlerta("Error de Stock", "No hay suficiente stock. Disponible: " + paciente.getStock(), Alert.AlertType.ERROR);
+        if (fecha == null) {
+            mostrarAlerta("Error", "Debe seleccionar una fecha.", Alert.AlertType.WARNING);
             return;
-        } try{
-            int nuevoStock = paciente.getStock()-cantidad;
-            paciente.setStock(nuevoStock);
-            double subtotal = precioUnitario*cantidad;
-            Citas cita = new Citas(
-                    LocalDate.now(),
-                    medico.getNombre(),
-                    paciente.getNombre(),
-                    cantidad,
-                    subtotal
-            );
-            listaCitas.add(cita);
-            limpiarCampos();
-            mostrarAlerta("Citación Exitosa", "cita registrada en la tabla.", Alert.AlertType.INFORMATION);
-
-        } catch (Exception e) {
-            mostrarAlerta("Error", "Error al procesar la cita: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+        if (hora.isEmpty()) {
+            mostrarAlerta("Error", "Debe escribir la hora.", Alert.AlertType.WARNING);
+            return;
         }
 
+        Citas cita = new Citas(
+                fecha,
+                hora,
+                medico.getNombre(),
+                paciente.getNombre(),
+                precio
+        );
+
+        listaCitas.add(cita);
+        limpiarCampos();
+
+        mostrarAlerta("Éxito", "La cita fue registrada correctamente.", Alert.AlertType.INFORMATION);
     }
+
     private void limpiarCampos() {
-        cmbPaciene.getSelectionModel().clearSelection();
+        cmbMedico.getSelectionModel().clearSelection();
+        cmbPaciente.getSelectionModel().clearSelection();
+        txtHora.clear();
+        datePicker.setValue(null);
+
+        spinnerPrecio.getValueFactory().setValue(0.0);
         lblPrecio.setText("$ 0.00");
-        SpinnerValueFactory.IntegerSpinnerValueFactory factory =
-                (SpinnerValueFactory.DoubleSpinnerValueFactory) spinnerPrecio.getValueFactory();
-        factory.setMax(1);
-        factory.setValue(1);
     }
 
     private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
@@ -185,15 +149,5 @@ public class RegistroCitasController {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
-    }
-    private void configurarTabla() {
-        tablaCitas.setItems(listaCitas);
-        colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
-        colMedico.setCellValueFactory(new PropertyValueFactory<>("medico"));
-        colPaciente.setCellValueFactory(new PropertyValueFactory<>("paciente"));
-        colHora.setCellValueFactory(new PropertyValueFactory<>("hora"));
-        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-        cmbMedico.getSelectionModel().clearSelection();
-
     }
 }
