@@ -35,7 +35,7 @@ public class GeneralController{
     @FXML
     void onLibros() throws IOException {
         AnchorPane panelConsultarLibros = FXMLLoader.load(
-                getClass().getResource("/com/example/parcialfinal/RegistroClientes.fxml"));
+                getClass().getResource("/com/example/parcialfinal/RegistroPacientes.fxml"));
         panelContenido.getChildren().clear();
         panelContenido.getChildren().add(panelConsultarLibros);
 
