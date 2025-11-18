@@ -33,17 +33,17 @@
                                     <children>
                                         <AnchorPane prefHeight="264.0" prefWidth="326.0">
                                             <children>
-                                                <Button fx:id="btnUsuarios" alignment="CENTER" layoutX="20.0" layoutY="28.0" mnemonicParsing="false" onAction="#onUsuarios" prefHeight="48.0" prefWidth="137.0" style="-fx-border-radius: 70; -fx-background-color: #416282; -fx-border-color: black; -fx-background-radius: 70;" text="Medicos" textFill="#fafafa">
+                                                <Button fx:id="btnUsuarios" alignment="CENTER" layoutX="20.0" layoutY="28.0" mnemonicParsing="false" onAction="#onMedicos" prefHeight="48.0" prefWidth="137.0" style="-fx-border-radius: 70; -fx-background-color: #416282; -fx-border-color: black; -fx-background-radius: 70;" text="Medicos" textFill="#fafafa">
                                                     <font>
                                                         <Font size="13.5" />
                                                     </font>
                                                 </Button>
-                                                <Button fx:id="btnPacientes" alignment="CENTER" layoutX="20.0" layoutY="91.0" mnemonicParsing="false" onAction="#onLibros" prefHeight="48.0" prefWidth="137.0" style="-fx-border-radius: 70; -fx-background-color: #416282; -fx-border-color: black; -fx-background-radius: 70;" text="Pacientes" textFill="#fafafa">
+                                                <Button fx:id="btnPacientes" alignment="CENTER" layoutX="20.0" layoutY="91.0" mnemonicParsing="false" onAction="#onPacientes" prefHeight="48.0" prefWidth="137.0" style="-fx-border-radius: 70; -fx-background-color: #416282; -fx-border-color: black; -fx-background-radius: 70;" text="Pacientes" textFill="#fafafa">
                                                     <font>
                                                         <Font size="13.5" />
                                                     </font>
                                                 </Button>
-                                                <Button fx:id="btnCitas" alignment="CENTER" layoutX="20.0" layoutY="150.0" mnemonicParsing="false" onAction="#onPrestamos" prefHeight="48.0" prefWidth="137.0" style="-fx-border-radius: 70; -fx-background-color: #416282; -fx-border-color: black; -fx-background-radius: 70;" text="Citas" textFill="#fafafa">
+                                                <Button fx:id="btnCitas" alignment="CENTER" layoutX="20.0" layoutY="150.0" mnemonicParsing="false" onAction="#onCitas" prefHeight="48.0" prefWidth="137.0" style="-fx-border-radius: 70; -fx-background-color: #416282; -fx-border-color: black; -fx-background-radius: 70;" text="Citas" textFill="#fafafa">
                                                     <font>
                                                         <Font size="13.5" />
                                                     </font>
