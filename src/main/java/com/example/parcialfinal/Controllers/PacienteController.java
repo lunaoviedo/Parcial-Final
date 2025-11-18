@@ -1,7 +1,7 @@
 package com.example.parcialfinal.Controllers;
 
 import com.example.parcialfinal.Models.Paciente;
-import com.example.parcialfinal.Repository.LibroRepository;
+import com.example.parcialfinal.Repository.PacienteRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -26,61 +26,68 @@ public class PacienteController {
     private Button btnModificar;
 
     @FXML
-    private TableColumn<Paciente, String> colCodigo;
+    private TableColumn<Paciente, String> colId;
 
     @FXML
     private TableColumn<Paciente, String> colNombre;
 
     @FXML
-    private TableColumn<Paciente, Double> colPrecio;
+    private TableColumn<Paciente, Double> colTelefono;
 
     @FXML
-    private TableColumn<Paciente, Integer> colStock;
+    private TableColumn<Paciente, Integer> colCorreo;
     @FXML
-    private TableView<Paciente> tablaLibros;
+    private TableColumn<Paciente, Integer> colMotivo;
     @FXML
-    private TextField txtCodigo;
+    private TableView<Paciente> tablaPacientes;
+    @FXML
+    private TextField txtId;
 
     @FXML
     private javafx.scene.control.TextField txtNombre;
 
     @FXML
-    private TextField txtPrecio;
+    private TextField txtTelefono;
 
     @FXML
-    private TextField txtStock;
-    private ObservableList<Paciente> librosObservable;
-    private LibroRepository libroRepository;
+    private TextField txtCorreo;
+    @FXML
+    private TextField txtMotivo;
+
+    private ObservableList<Paciente> pacientesObservable;
+    private PacienteRepository pacienteRepository;
     @FXML
     public void initialize(){
-        libroRepository =LibroRepository.getInstancia();
+        pacienteRepository =PacienteRepository.getInstancia();
         configurarTabla();
-        cargarLibros();
-        tablaLibros.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> mostrarLibro(newValue)
+        cargarPacientes();
+        tablaPacientes.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> mostrarPaciente(newValue)
         );
 
     }
     private void configurarTabla(){
-        colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-        colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+        colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
+        colMotivo.setCellValueFactory(new PropertyValueFactory<>("motivo"));
     }
 
-    private void cargarLibros() {
-        librosObservable = FXCollections.observableArrayList(libroRepository.getLibros());
-        tablaLibros.setItems(librosObservable);
+    private void cargarPacientes() {
+        pacientesObservable = FXCollections.observableArrayList(pacienteRepository.getPacientes());
+        tablaPacientes.setItems(pacientesObservable);
     }
 
     private void limpiarCampos(){
-        txtCodigo.clear();
+        txtId.clear();
         txtNombre.clear();
-        txtPrecio.clear();
-        txtStock.clear();
-        txtCodigo.setDisable(false);
+        txtTelefono.clear();
+        txtCorreo.clear();
+        txtMotivo.clear();
+        txtId.setDisable(false);
         txtNombre.setDisable(false);
-        tablaLibros.getSelectionModel().clearSelection();
+        tablaPacientes.getSelectionModel().clearSelection();
 
     }
 
@@ -89,29 +96,23 @@ public class PacienteController {
         if(!validarCampos()){
             return;
         } try{
-            String codigo = txtCodigo.getText();
-            String name = txtNombre.getText();
-            Double precio;
-            int stock;
-            try{
-                precio = Double.parseDouble(txtPrecio.getText());
-                stock = Integer.parseInt(txtStock.getText());
-            }catch (NumberFormatException e) {
-                mostrarAlerta("Error de Formato", "El precio y el stock deben ser números válidos.", Alert.AlertType.ERROR);
-                return;
-            }
-            Paciente paciente = new Paciente(codigo, name, precio, stock);
-            libroRepository.agregarLibro(paciente);
-            mostrarAlerta("Éxito", "Libro agregado correctamente.", Alert.AlertType.INFORMATION);
+            String id = txtId.getText();
+            String nombre = txtNombre.getText();
+            String telefono = txtTelefono.getText();
+            String correo = txtCorreo.getText();
+            String motivo = txtMotivo.getText();
+            Paciente paciente = new Paciente(id, nombre, telefono, correo, motivo);
+            pacienteRepository.agregarPaciente(paciente);
+            mostrarAlerta("Éxito", "Paciente agregado correctamente.", Alert.AlertType.INFORMATION);
             actualizarTabla();
             limpiarCampos();
         } catch (Exception e) {
-            mostrarAlerta("Error", "Error al agregar el Libro: " + e.getMessage(), Alert.AlertType.ERROR);
+            mostrarAlerta("Error", "Error al agregar el Paciente: " + e.getMessage(), Alert.AlertType.ERROR);
         }
 
     }
     private boolean validarCampos(){
-        if(txtCodigo.getText().isEmpty() || txtNombre.getText().isEmpty() || txtPrecio.getText().isEmpty()|| txtStock.getText().isEmpty()){
+        if(txtId.getText().isEmpty() || txtNombre.getText().isEmpty() || txtTelefono.getText().isEmpty()|| txtCorreo.getText().isEmpty()|| txtMotivo.getText().isEmpty()){
             mostrarAlerta("Error", "Todos los campos deben ser diligenciados obligatoriamente.", Alert.AlertType.WARNING);
             return false;
         } return  true;
@@ -119,36 +120,37 @@ public class PacienteController {
 
     @FXML
     void onEliminar() {
-        Paciente paciente = tablaLibros.getSelectionModel().getSelectedItem();
+        Paciente paciente = tablaPacientes.getSelectionModel().getSelectedItem();
         if(paciente == null){
-            mostrarAlerta("Error", "Seleccione un libro para eliminar.", Alert.AlertType.WARNING);
+            mostrarAlerta("Error", "Seleccione un paciente para eliminar.", Alert.AlertType.WARNING);
             return;
         }
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("Confirmar eliminación");
         confirmacion.setHeaderText("¿Estás seguro?");
-        confirmacion.setContentText("¿Deseas eliminar el libro: " + paciente.getNombre() + "?");
+        confirmacion.setContentText("¿Deseas eliminar el paciente: " + paciente.getNombre() + "?");
 
         Optional<ButtonType> resultado = confirmacion.showAndWait();
         if(resultado.isPresent() && resultado.get() == ButtonType.OK){
             try{
-                libroRepository.eliminarLibro(paciente);
-                cargarLibros();
-                mostrarAlerta("Exito", "libro eliminado correctamente.", Alert.AlertType.INFORMATION);
+                pacienteRepository.eliminarLibro(paciente);
+                cargarPacientes();
+                mostrarAlerta("Exito", "paciente eliminado correctamente.", Alert.AlertType.INFORMATION);
                 limpiarCampos();
             } catch (Exception e) {
-                mostrarAlerta("Error", "Error al eliminar el libro: "+ e.getMessage(), Alert.AlertType.ERROR);
+                mostrarAlerta("Error", "Error al eliminar el paciente: "+ e.getMessage(), Alert.AlertType.ERROR);
             }
         }
 
     }
-    public void actualizarTabla(){cargarLibros();}
-    private void mostrarLibro(Paciente paciente){
+    public void actualizarTabla(){cargarPacientes();}
+    private void mostrarPaciente(Paciente paciente){
         if(paciente !=null){
-            txtCodigo.setText(paciente.getId());
+            txtId.setText(paciente.getId());
             txtNombre.setText(paciente.getNombre());
-            txtPrecio.setText(String.valueOf(paciente.getPrecio()));
-            txtStock.setText(String.valueOf(paciente.getStock()));
+            txtTelefono.setText(paciente.getTelefono());
+            txtCorreo.setText(paciente.getEmail());
+            txtMotivo.setText(paciente.getMotivoConsulta());
         } else{
             limpiarCampos();
         }
@@ -160,21 +162,22 @@ public class PacienteController {
         if(!validarCampos()){
             return;
         }
-        Paciente paciente = tablaLibros.getSelectionModel().getSelectedItem();
+        Paciente paciente = tablaPacientes.getSelectionModel().getSelectedItem();
         if(paciente == null){
-            mostrarAlerta("Error", "Seleccione un libro para modificar.", Alert.AlertType.WARNING);
+            mostrarAlerta("Error", "Seleccione un paciente para modificar.", Alert.AlertType.WARNING);
             return;
         }try{
-            paciente.setId(txtCodigo.getText());
+            paciente.setId(txtId.getText());
             paciente.setNombre(txtNombre.getText());
-            paciente.setPrecio(Double.parseDouble(txtPrecio.getText()));
-            paciente.setStock(Integer.parseInt(txtStock.getText()));
+            paciente.setTelefono(txtTelefono.getText());
+            paciente.setEmail(txtCorreo.getText());
+            paciente.setMotivoConsulta(txtMotivo.getText());
             actualizarTabla();
-            tablaLibros.refresh();
-            mostrarAlerta("Éxito", "Libro modificado correctamente.", Alert.AlertType.INFORMATION);
+            tablaPacientes.refresh();
+            mostrarAlerta("Éxito", "Paciente modificado correctamente.", Alert.AlertType.INFORMATION);
             limpiarCampos();
         }catch (Exception e) {
-            mostrarAlerta("Error", "Error al modificar el Libro: " + e.getMessage(), Alert.AlertType.ERROR);
+            mostrarAlerta("Error", "Error al modificar el Paciente: " + e.getMessage(), Alert.AlertType.ERROR);
         }
 
     }

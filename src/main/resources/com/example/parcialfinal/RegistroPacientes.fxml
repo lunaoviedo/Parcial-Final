@@ -85,7 +85,7 @@
                 </HBox>
                 <HBox prefHeight="204.0" prefWidth="600.0">
                     <children>
-                        <TableView fx:id="tablaLibros" prefHeight="182.0" prefWidth="567.0">
+                        <TableView fx:id="tablaPacientes" prefHeight="182.0" prefWidth="567.0">
                             <columns>
                                 <TableColumn fx:id="colId" prefWidth="94.4000244140625" text="Cedula" />
                                 <TableColumn fx:id="colNombre" prefWidth="128.79998779296875" text="Nombre" />
