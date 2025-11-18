@@ -1,16 +1,16 @@
 package com.example.parcialfinal.Repository;
 
-import com.example.parcialfinal.Models.Usuario;
+import com.example.parcialfinal.Models.Medico;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class UsuarioRepository {
 
     private static UsuarioRepository instancia;
-    private final ObservableList<Usuario> usuarios;
+    private final ObservableList<Medico> medicos;
 
     private UsuarioRepository() {
-        usuarios = FXCollections.observableArrayList();
+        medicos = FXCollections.observableArrayList();
         cargarDatosEjemplo();
     }
 
@@ -22,19 +22,19 @@ public class UsuarioRepository {
     }
 
     private void cargarDatosEjemplo() {
-        usuarios.add(new Usuario("1056829202", "David Santos", "3104250997", "Davilss@gmail.com"));
-        usuarios.add(new Usuario("109097508", "Simon Veraniega", "3207411485", "Simonettapatineta@gmail.com"));
+        medicos.add(new Medico("1056829202", "David Santos", "3104250997", "Davilss@gmail.com"));
+        medicos.add(new Medico("109097508", "Simon Veraniega", "3207411485", "Simonettapatineta@gmail.com"));
     }
 
-    public ObservableList<Usuario> getUsuarios() {
-        return usuarios;
+    public ObservableList<Medico> getUsuarios() {
+        return medicos;
     }
 
-    public void addUsuario(Usuario usuario) {
-        usuarios.add(usuario);
+    public void addUsuario(Medico medico) {
+        medicos.add(medico);
     }
 
-    public void removeUsuario(Usuario usuario) {
-        usuarios.remove(usuario);
+    public void removeUsuario(Medico medico) {
+        medicos.remove(medico);
     }
 }

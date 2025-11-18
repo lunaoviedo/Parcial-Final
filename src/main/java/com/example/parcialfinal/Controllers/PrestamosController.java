@@ -1,9 +1,9 @@
 package com.example.parcialfinal.Controllers;
 
 
-import com.example.parcialfinal.Models.Paciente;
+import com.example.parcialfinal.Models.Libro;
 import com.example.parcialfinal.Models.Usuario;
-import com.example.parcialfinal.Models.Citas;
+import com.example.parcialfinal.Models.DetallePrestamo;
 import com.example.parcialfinal.Repository.LibroRepository;
 import com.example.parcialfinal.Repository.UsuarioRepository;
 import javafx.collections.FXCollections;
@@ -23,17 +23,17 @@ public class PrestamosController {
     @FXML
     private ComboBox<Usuario> cmbUsuario;
     @FXML
-    private ComboBox<Paciente> cmbLibro;
+    private ComboBox<Libro> cmbLibro;
     @FXML
-    private TableColumn<Citas, Integer> colCantidad;
+    private TableColumn<DetallePrestamo, Integer> colCantidad;
     @FXML
-    private TableColumn<Citas, String> colUsuario;
+    private TableColumn<DetallePrestamo, String> colUsuario;
     @FXML
-    private TableColumn<Citas, String> colLibro;
+    private TableColumn<DetallePrestamo, String> colLibro;
     @FXML
-    private TableColumn<Citas, LocalDate> colFecha;
+    private TableColumn<DetallePrestamo, LocalDate> colFecha;
     @FXML
-    private TableColumn<Citas, Double> colSubtotal;
+    private TableColumn<DetallePrestamo, Double> colSubtotal;
     @FXML
     private Spinner<Integer> spinnerCantidad;
     @FXML
@@ -44,8 +44,8 @@ public class PrestamosController {
     private Label lblSubtotal;
 
     @FXML
-    private TableView<Citas> tablaPrestamos;
-    private ObservableList<Citas> listaPrestamos;
+    private TableView<DetallePrestamo> tablaPrestamos;
+    private ObservableList<DetallePrestamo> listaPrestamos;
     private LibroRepository libroRepository;
     private UsuarioRepository usuarioRepository;
     private double precioUnitario = 0.0;
@@ -126,14 +126,14 @@ public class PrestamosController {
     }
     private void cargarLibros() {
         cmbLibro.setItems(FXCollections.observableArrayList(libroRepository.getLibros()));
-        cmbLibro.setConverter(new StringConverter<Paciente>() {
+        cmbLibro.setConverter(new StringConverter<Libro>() {
             @Override
-            public String toString(Paciente paciente) {
-                return (paciente != null) ? paciente.getNombre(): "";
+            public String toString(Libro libro) {
+                return (libro != null) ? libro.getNombre(): "";
             }
 
             @Override
-            public Paciente fromString(String s) {
+            public Libro fromString(String s) {
                 return null;
             }
         });
@@ -146,23 +146,23 @@ public class PrestamosController {
             mostrarAlerta("Error de Prestamo", "Debe seleccionar un usuario.", Alert.AlertType.WARNING);
             return;
         }
-        Paciente paciente = cmbLibro.getSelectionModel().getSelectedItem();
-        if (paciente == null) {
+        Libro libro = cmbLibro.getSelectionModel().getSelectedItem();
+        if (libro == null) {
             mostrarAlerta("Error de Prestamo", "Debe seleccionar un libro.", Alert.AlertType.WARNING);
             return;
         }
         int cantidad = spinnerCantidad.getValue();
-        if (cantidad > paciente.getStock()) {
-            mostrarAlerta("Error de Stock", "No hay suficiente stock. Disponible: " + paciente.getStock(), Alert.AlertType.ERROR);
+        if (cantidad > libro.getStock()) {
+            mostrarAlerta("Error de Stock", "No hay suficiente stock. Disponible: " + libro.getStock(), Alert.AlertType.ERROR);
             return;
         } try{
-            int nuevoStock = paciente.getStock()-cantidad;
-            paciente.setStock(nuevoStock);
+            int nuevoStock = libro.getStock()-cantidad;
+            libro.setStock(nuevoStock);
             double subtotal = precioUnitario*cantidad;
-            Citas detalle = new Citas(
+            DetallePrestamo detalle = new DetallePrestamo(
                     LocalDate.now(),
                     usuario.getNombre(),
-                    paciente.getNombre(),
+                    libro.getNombre(),
                     cantidad,
                     subtotal
             );
