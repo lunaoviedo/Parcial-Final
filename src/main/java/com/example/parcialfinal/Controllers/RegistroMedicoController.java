@@ -21,15 +21,15 @@ public class RegistroMedicoController {
     private Button btnModificar;
 
     @FXML
-    private TableColumn<Usuario,String> colCorreo;
+    private TableColumn<Medico,String> colCorreo;
 
     @FXML
-    private TableColumn<Usuario, String> colId;
+    private TableColumn<Medico, String> colId;
 
     @FXML
-    private TableColumn<Usuario, String> colNombre;
+    private TableColumn<Medico, String> colNombre;
     @FXML
-    private TableView<Usuario> tablaMedicos;
+    private TableView<Medico> tablaMedicos;
     @FXML
     private TableColumn<Usuario,String> colEspcialidad;
     @FXML
@@ -48,7 +48,7 @@ public class RegistroMedicoController {
     private TextField txtEspcialidad;
 
     @FXML
-    private TableColumn<Usuario, String> colTel;
+    private TableColumn<Medico, String> colTel;
 
 
     private AnchorPane panelContenido;
@@ -61,12 +61,12 @@ public class RegistroMedicoController {
         cargarUsuarios();
         btnEliminar.setDisable(true);
         btnModificar.setDisable(true);
-        tablaUsuarios.getSelectionModel().selectedItemProperty().addListener(
+        tablaMedicos.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     boolean isSelected = newValue != null;
                     btnEliminar.setDisable(!isSelected);
                     btnModificar.setDisable(!isSelected);
-                    mostrarUsuario(newValue);
+                    mostrarMedico(newValue);
                     txtId.setDisable(isSelected);
                 }
         );
@@ -80,7 +80,7 @@ public class RegistroMedicoController {
         colEspcialidad.setCellValueFactory(new PropertyValueFactory<>("especialidad"));
     }
     private void cargarUsuarios() {
-        medicoObservable = medicoRepository.getUsuarios();
+        medicoObservable = medicoRepository.getMedicos();
         tablaMedicos.setItems(medicoObservable);
     }
 
@@ -90,7 +90,7 @@ public class RegistroMedicoController {
         txtTel.clear();
         txtCorreo.clear();
         txtId.setDisable(false);
-        tablaUsuarios.getSelectionModel().clearSelection();
+        tablaMedicos.getSelectionModel().clearSelection();
     }
 
     @FXML
@@ -104,20 +104,20 @@ public class RegistroMedicoController {
             String name = txtNombre.getText();
             String phone = txtTel.getText();
             String email = txtCorreo.getText();
-            Usuario usuario = new Usuario(id, name, phone, email);
-            usuarioRepository.addUsuario(usuario);
-            tablaUsuarios.refresh();
-            mostrarAlerta("Éxito", "Usuario agregado correctamente.", Alert.AlertType.INFORMATION);
+            Medico medico = new Medico(id, name, phone, email);
+            medicoRepository.addUsuario(usuario);
+            tablaMedicosMedicos.refresh();
+            mostrarAlerta("Éxito", "Medico agregado correctamente.", Alert.AlertType.INFORMATION);
             limpiarCampos();
         } catch (Exception e) {
-            mostrarAlerta("Error", "Error al agregar el usuario: " + e.getMessage(), Alert.AlertType.ERROR);
+            mostrarAlerta("Error", "Error al agregar el medico: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
 
     private boolean validarCampos() {
         if(txtId.getText().isEmpty() || txtNombre.getText().isEmpty() || txtTel.getText().isEmpty()||
-                txtCorreo.getText().isEmpty()) {
+                txtCorreo.getText().isEmpty() || txtEspcialidad.getText().isEmpty()) {
             mostrarAlerta("Error", "Todos los campos deben ser diligenciados obligatoriamente.", Alert.AlertType.WARNING);
             return false;
         } return true;
@@ -125,39 +125,39 @@ public class RegistroMedicoController {
 
     @FXML
     void onEliminar() {
-        Usuario usuario = tablaUsuarios.getSelectionModel().getSelectedItem();
-        if(usuario == null){
+        Medico medico = tablaMedicos.getSelectionModel().getSelectedItem();
+        if(medico == null){
             mostrarAlerta("Error", "Seleccione un usuario para eliminar.", Alert.AlertType.WARNING);
             return;
         }
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("Confirmar eliminación");
         confirmacion.setHeaderText("¿Estás seguro?");
-        confirmacion.setContentText("¿Deseas eliminar el usuario: " + usuario.getNombre() + "?");
+        confirmacion.setContentText("¿Deseas eliminar el usuario: " + medico.getNombre() + "?");
 
         Optional<ButtonType> resultado = confirmacion.showAndWait();
         if(resultado.isPresent() && resultado.get() == ButtonType.OK){
             try{
-                usuarioRepository.removeUsuario(usuario);
-                usuariosObservable.remove(usuario);
-                tablaUsuarios.refresh();
-                mostrarAlerta("Exito", "usuario eliminado correctamente.", Alert.AlertType.INFORMATION);
+                medicoRepository.removeMedico(medico);
+                medicosObservable.remove(medico);
+                tablaMedicos.refresh();
+                mostrarAlerta("Exito", "medico eliminado correctamente.", Alert.AlertType.INFORMATION);
                 limpiarCampos();
             } catch (Exception e) {
-                mostrarAlerta("Exito", "Error al eliminar el usuario: "+ e.getMessage(), Alert.AlertType.ERROR);
+                mostrarAlerta("Exito", "Error al eliminar el medico: "+ e.getMessage(), Alert.AlertType.ERROR);
             }
         }
     }
     public void actualizarTabla() {
-        cargarUsuarios();
+        cargarMedico();
     }
 
-    private void mostrarUsuario(Usuario usuario) {
+    private void mostrarMedico(Medico medico) {
         if(usuario != null){
-            txtId.setText(usuario.getId());
-            txtNombre.setText(usuario.getNombre());
-            txtTel.setText(usuario.getTelefono());
-            txtCorreo.setText(usuario.getEmail());
+            txtId.setText(medico.getId());
+            txtNombre.setText(medico.getNombre());
+            txtTel.setText(medico.getTelefono());
+            txtCorreo.setText(medico.getEmail());
             txtId.setDisable(true);
         } else {
             limpiarCampos();
@@ -170,21 +170,21 @@ public class RegistroMedicoController {
         if(!validarCampos()){
             return;
         }
-        Usuario usuario = tablaUsuarios.getSelectionModel().getSelectedItem();
+        Usuario usuario = tablaMedicos.getSelectionModel().getSelectedItem();
         if(usuario == null){
-            mostrarAlerta("Error", "Seleccione un usuario para modificar.", Alert.AlertType.WARNING);
+            mostrarAlerta("Error", "Seleccione un medico para modificar.", Alert.AlertType.WARNING);
             return;
         }
         try{
-            usuario.setNombre(txtNombre.getText());
-            usuario.setTelefono(txtTel.getText());
-            usuario.setEmail(txtCorreo.getText());
+            medico.setNombre(txtNombre.getText());
+            medico.setTelefono(txtTel.getText());
+            medico.setEmail(txtCorreo.getText());
             actualizarTabla();
-            tablaUsuarios.refresh();
-            mostrarAlerta("Éxito", "usuario modificado correctamente.", Alert.AlertType.INFORMATION);
+            tablaMedicos.refresh();
+            mostrarAlerta("Éxito", "medico modificado correctamente.", Alert.AlertType.INFORMATION);
             limpiarCampos();
         } catch (Exception e) {
-            mostrarAlerta("Error", "Error al modificar el usuario: " + e.getMessage(), Alert.AlertType.ERROR);
+            mostrarAlerta("Error", "Error al modificar el medico: " + e.getMessage(), Alert.AlertType.ERROR);
         }
 
 
