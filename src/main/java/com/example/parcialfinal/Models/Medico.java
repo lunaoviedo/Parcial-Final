@@ -1,5 +1,5 @@
 package com.example.parcialfinal.Models;
-
+//g¿holllll
 
 public class Medico {
     private String especialidad;
