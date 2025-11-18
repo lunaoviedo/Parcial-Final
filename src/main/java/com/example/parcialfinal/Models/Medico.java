@@ -1,5 +1,4 @@
 package com.example.parcialfinal.Models;
-//g¿holllll
 
 public class Medico {
     private String especialidad;
@@ -9,7 +8,8 @@ public class Medico {
     public Medico(String especialidad) {
         this.especialidad = especialidad;
            }
-    public String getEspecialidad() {
+
+   public String getEspecialidad() {
         return especialidad;
     }
 
