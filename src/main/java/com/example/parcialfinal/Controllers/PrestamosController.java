@@ -1,7 +1,7 @@
 package com.example.parcialfinal.Controllers;
 
 
-import com.example.parcialfinal.Models.Libro;
+import com.example.parcialfinal.Models.Paciente;
 import com.example.parcialfinal.Models.Usuario;
 import com.example.parcialfinal.Models.DetallePrestamo;
 import com.example.parcialfinal.Repository.LibroRepository;
@@ -23,7 +23,7 @@ public class PrestamosController {
     @FXML
     private ComboBox<Usuario> cmbUsuario;
     @FXML
-    private ComboBox<Libro> cmbLibro;
+    private ComboBox<Paciente> cmbLibro;
     @FXML
     private TableColumn<DetallePrestamo, Integer> colCantidad;
     @FXML
@@ -126,14 +126,14 @@ public class PrestamosController {
     }
     private void cargarLibros() {
         cmbLibro.setItems(FXCollections.observableArrayList(libroRepository.getLibros()));
-        cmbLibro.setConverter(new StringConverter<Libro>() {
+        cmbLibro.setConverter(new StringConverter<Paciente>() {
             @Override
-            public String toString(Libro libro) {
-                return (libro != null) ? libro.getNombre(): "";
+            public String toString(Paciente paciente) {
+                return (paciente != null) ? paciente.getNombre(): "";
             }
 
             @Override
-            public Libro fromString(String s) {
+            public Paciente fromString(String s) {
                 return null;
             }
         });
@@ -146,23 +146,23 @@ public class PrestamosController {
             mostrarAlerta("Error de Prestamo", "Debe seleccionar un usuario.", Alert.AlertType.WARNING);
             return;
         }
-        Libro libro = cmbLibro.getSelectionModel().getSelectedItem();
-        if (libro == null) {
+        Paciente paciente = cmbLibro.getSelectionModel().getSelectedItem();
+        if (paciente == null) {
             mostrarAlerta("Error de Prestamo", "Debe seleccionar un libro.", Alert.AlertType.WARNING);
             return;
         }
         int cantidad = spinnerCantidad.getValue();
-        if (cantidad > libro.getStock()) {
-            mostrarAlerta("Error de Stock", "No hay suficiente stock. Disponible: " + libro.getStock(), Alert.AlertType.ERROR);
+        if (cantidad > paciente.getStock()) {
+            mostrarAlerta("Error de Stock", "No hay suficiente stock. Disponible: " + paciente.getStock(), Alert.AlertType.ERROR);
             return;
         } try{
-            int nuevoStock = libro.getStock()-cantidad;
-            libro.setStock(nuevoStock);
+            int nuevoStock = paciente.getStock()-cantidad;
+            paciente.setStock(nuevoStock);
             double subtotal = precioUnitario*cantidad;
             DetallePrestamo detalle = new DetallePrestamo(
                     LocalDate.now(),
                     usuario.getNombre(),
-                    libro.getNombre(),
+                    paciente.getNombre(),
                     cantidad,
                     subtotal
             );

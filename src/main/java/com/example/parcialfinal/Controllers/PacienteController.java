@@ -1,6 +1,6 @@
 package com.example.parcialfinal.Controllers;
 
-import com.example.parcialfinal.Models.Libro;
+import com.example.parcialfinal.Models.Paciente;
 import com.example.parcialfinal.Repository.LibroRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +15,7 @@ import javafx.scene.control.Button;
 
 import java.util.Optional;
 
-public class LibrosController {
+public class PacienteController {
     @FXML
     private Button btnAgregar;
 
@@ -26,18 +26,18 @@ public class LibrosController {
     private Button btnModificar;
 
     @FXML
-    private TableColumn<Libro, String> colCodigo;
+    private TableColumn<Paciente, String> colCodigo;
 
     @FXML
-    private TableColumn<Libro, String> colNombre;
+    private TableColumn<Paciente, String> colNombre;
 
     @FXML
-    private TableColumn<Libro, Double> colPrecio;
+    private TableColumn<Paciente, Double> colPrecio;
 
     @FXML
-    private TableColumn<Libro, Integer> colStock;
+    private TableColumn<Paciente, Integer> colStock;
     @FXML
-    private TableView<Libro> tablaLibros;
+    private TableView<Paciente> tablaLibros;
     @FXML
     private TextField txtCodigo;
 
@@ -49,7 +49,7 @@ public class LibrosController {
 
     @FXML
     private TextField txtStock;
-    private ObservableList<Libro> librosObservable;
+    private ObservableList<Paciente> librosObservable;
     private LibroRepository libroRepository;
     @FXML
     public void initialize(){
@@ -100,8 +100,8 @@ public class LibrosController {
                 mostrarAlerta("Error de Formato", "El precio y el stock deben ser números válidos.", Alert.AlertType.ERROR);
                 return;
             }
-            Libro libro = new Libro(codigo, name, precio, stock);
-            libroRepository.agregarLibro(libro);
+            Paciente paciente = new Paciente(codigo, name, precio, stock);
+            libroRepository.agregarLibro(paciente);
             mostrarAlerta("Éxito", "Libro agregado correctamente.", Alert.AlertType.INFORMATION);
             actualizarTabla();
             limpiarCampos();
@@ -119,20 +119,20 @@ public class LibrosController {
 
     @FXML
     void onEliminar() {
-        Libro libro = tablaLibros.getSelectionModel().getSelectedItem();
-        if(libro == null){
+        Paciente paciente = tablaLibros.getSelectionModel().getSelectedItem();
+        if(paciente == null){
             mostrarAlerta("Error", "Seleccione un libro para eliminar.", Alert.AlertType.WARNING);
             return;
         }
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("Confirmar eliminación");
         confirmacion.setHeaderText("¿Estás seguro?");
-        confirmacion.setContentText("¿Deseas eliminar el libro: " + libro.getNombre() + "?");
+        confirmacion.setContentText("¿Deseas eliminar el libro: " + paciente.getNombre() + "?");
 
         Optional<ButtonType> resultado = confirmacion.showAndWait();
         if(resultado.isPresent() && resultado.get() == ButtonType.OK){
             try{
-                libroRepository.eliminarLibro(libro);
+                libroRepository.eliminarLibro(paciente);
                 cargarLibros();
                 mostrarAlerta("Exito", "libro eliminado correctamente.", Alert.AlertType.INFORMATION);
                 limpiarCampos();
@@ -143,12 +143,12 @@ public class LibrosController {
 
     }
     public void actualizarTabla(){cargarLibros();}
-    private void mostrarLibro(Libro libro){
-        if(libro !=null){
-            txtCodigo.setText(libro.getId());
-            txtNombre.setText(libro.getNombre());
-            txtPrecio.setText(String.valueOf(libro.getPrecio()));
-            txtStock.setText(String.valueOf(libro.getStock()));
+    private void mostrarLibro(Paciente paciente){
+        if(paciente !=null){
+            txtCodigo.setText(paciente.getId());
+            txtNombre.setText(paciente.getNombre());
+            txtPrecio.setText(String.valueOf(paciente.getPrecio()));
+            txtStock.setText(String.valueOf(paciente.getStock()));
         } else{
             limpiarCampos();
         }
@@ -160,15 +160,15 @@ public class LibrosController {
         if(!validarCampos()){
             return;
         }
-        Libro libro = tablaLibros.getSelectionModel().getSelectedItem();
-        if(libro == null){
+        Paciente paciente = tablaLibros.getSelectionModel().getSelectedItem();
+        if(paciente == null){
             mostrarAlerta("Error", "Seleccione un libro para modificar.", Alert.AlertType.WARNING);
             return;
         }try{
-            libro.setId(txtCodigo.getText());
-            libro.setNombre(txtNombre.getText());
-            libro.setPrecio(Double.parseDouble(txtPrecio.getText()));
-            libro.setStock(Integer.parseInt(txtStock.getText()));
+            paciente.setId(txtCodigo.getText());
+            paciente.setNombre(txtNombre.getText());
+            paciente.setPrecio(Double.parseDouble(txtPrecio.getText()));
+            paciente.setStock(Integer.parseInt(txtStock.getText()));
             actualizarTabla();
             tablaLibros.refresh();
             mostrarAlerta("Éxito", "Libro modificado correctamente.", Alert.AlertType.INFORMATION);

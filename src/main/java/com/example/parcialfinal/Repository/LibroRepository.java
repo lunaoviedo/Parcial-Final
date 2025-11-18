@@ -1,16 +1,16 @@
 package com.example.parcialfinal.Repository;
 
-import com.example.parcialfinal.Models.Libro;
+import com.example.parcialfinal.Models.Paciente;
 
 import java.util.ArrayList;
 
 public class LibroRepository {
 
     private static LibroRepository instancia;
-    private ArrayList<Libro> libros;
+    private ArrayList<Paciente> pacientes;
 
     private LibroRepository() {
-        libros = new ArrayList<>();
+        pacientes = new ArrayList<>();
         cargarDatosEjemplo();
     }
 
@@ -24,33 +24,33 @@ public class LibroRepository {
 
 
     private void cargarDatosEjemplo() {
-        libros.add(new Libro("123659", "Barra de Chocolate", 5000.0, 23));
-        libros.add(new Libro("155441", "Bocadillo", 2000.0, 30));
+        pacientes.add(new Paciente("123659", "Barra de Chocolate", 5000.0, 23));
+        pacientes.add(new Paciente("155441", "Bocadillo", 2000.0, 30));
 
     }
 
 
-    public ArrayList<Libro> getLibros() {
+    public ArrayList<Paciente> getLibros() {
 
-        return libros;
+        return pacientes;
     }
 
 
-    public void agregarLibro(Libro libro) {
+    public void agregarLibro(Paciente paciente) {
 
-        libros.add(libro);
+        pacientes.add(paciente);
 
     }
 
 
-    public boolean eliminarLibro(Libro libro) {
+    public boolean eliminarLibro(Paciente paciente) {
 
-        return libros.remove(libro);
+        return pacientes.remove(paciente);
 
     }
 
 
     public int getCantidadLibros() {
-        return libros.size();
+        return pacientes.size();
     }
 }
