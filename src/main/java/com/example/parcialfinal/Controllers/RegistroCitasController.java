@@ -42,6 +42,32 @@ public class RegistroCitasController {
         medicoRepository = MedicoRepository.getInstancia();
         listaCitas = FXCollections.observableArrayList();
 
+        txtHora.textProperty().addListener((obs, oldValue, newValue) -> {
+
+            newValue = newValue.replaceAll("[^0-9]", "");
+
+            if (newValue.length() > 4) {
+                newValue = newValue.substring(0, 4);
+            }
+            if (newValue.length() >= 3) {
+                newValue = newValue.substring(0, 2) + ":" + newValue.substring(2);
+            }
+            if (!txtHora.getText().equals(newValue)) {
+                txtHora.setText(newValue);
+            }
+        });
+        datePicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+
+                if (date.isBefore(LocalDate.now())) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #ffcccc;");
+                }
+            }
+        });
+
         configurarTabla();
         cargarMedicos();
         cargarPacientes();
@@ -50,7 +76,7 @@ public class RegistroCitasController {
 
     private void configurarSpinnerPrecio() {
         SpinnerValueFactory<Double> factory =
-                new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999, 0, 5);
+                new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999, 0, 500);
         spinnerPrecio.setValueFactory(factory);
 
         spinnerPrecio.valueProperty().addListener((obs, oldV, newV) -> {
@@ -72,7 +98,10 @@ public class RegistroCitasController {
     }
 
     private void cargarPacientes() {
-        cmbPaciente.setItems((ObservableList<Paciente>) pacienteRepository.getPacientes());
+        ObservableList<Paciente> listaPacientes =
+                FXCollections.observableArrayList(pacienteRepository.getPacientes());
+
+        cmbPaciente.setItems(listaPacientes);
 
         cmbPaciente.setConverter(new StringConverter<Paciente>() {
             @Override
@@ -93,6 +122,29 @@ public class RegistroCitasController {
         colPaciente.setCellValueFactory(new PropertyValueFactory<>("paciente"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
     }
+
+    private boolean existeConflictoMedico(String nombreMedico, LocalDate fecha, String hora) {
+        for (Citas c : listaCitas) {
+            if (c.getMedico().equals(nombreMedico)
+                    && c.getFecha().equals(fecha)
+                    && c.getHora().equals(hora)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean existeConflictoPaciente(String nombrePaciente, LocalDate fecha, String hora) {
+        for (Citas c : listaCitas) {
+            if (c.getPaciente().equals(nombrePaciente)
+                    && c.getFecha().equals(fecha)
+                    && c.getHora().equals(hora)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     @FXML
     void onCitar(ActionEvent event) {
@@ -116,6 +168,40 @@ public class RegistroCitasController {
         }
         if (hora.isEmpty()) {
             mostrarAlerta("Error", "Debe escribir la hora.", Alert.AlertType.WARNING);
+            return;
+        }
+        if (existeConflictoMedico(medico.getNombre(), fecha, hora)) {
+            mostrarAlerta("Conflicto de horario",
+                    "El médico ya tiene una cita a esa fecha y hora.",
+                    Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (existeConflictoPaciente(paciente.getNombre(), fecha, hora)) {
+            mostrarAlerta("Conflicto de horario",
+                    "El paciente ya tiene una cita a esa fecha y hora.",
+                    Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (!hora.matches("([01]\\d|2[0-3]):[0-5]\\d")) {
+            mostrarAlerta(
+                    "Formato incorrecto",
+                    "La hora debe estar en formato HH:MM (por ejemplo: 08:30, 14:00)",
+                    Alert.AlertType.WARNING
+            );
+            return;
+        }
+        if (!hora.matches("([01]\\d|2[0-3]):[0-5]\\d")) {
+            mostrarAlerta(
+                    "Formato incorrecto",
+                    "La hora debe ser válida en formato HH:MM (ej: 08:30, 14:00)",
+                    Alert.AlertType.WARNING
+            );
+            return;
+        }
+        if (fecha.isBefore(LocalDate.now())) {
+            mostrarAlerta("Fecha inválida", "No puede registrar una cita con una fecha pasada.", Alert.AlertType.WARNING);
             return;
         }
 
