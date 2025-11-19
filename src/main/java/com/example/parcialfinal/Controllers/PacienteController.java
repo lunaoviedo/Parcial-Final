@@ -32,12 +32,12 @@ public class PacienteController {
     private TableColumn<Paciente, String> colNombre;
 
     @FXML
-    private TableColumn<Paciente, Double> colTelefono;
+    private TableColumn<Paciente, String> colTelefono;
 
     @FXML
-    private TableColumn<Paciente, Integer> colCorreo;
+    private TableColumn<Paciente, String> colCorreo;
     @FXML
-    private TableColumn<Paciente, Integer> colMotivo;
+    private TableColumn<Paciente, String> colMotivo;
     @FXML
     private TableView<Paciente> tablaPacientes;
     @FXML
@@ -70,8 +70,8 @@ public class PacienteController {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-        colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
-        colMotivo.setCellValueFactory(new PropertyValueFactory<>("motivo"));
+        colCorreo.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colMotivo.setCellValueFactory(new PropertyValueFactory<>("motivoConsulta"));
     }
 
     private void cargarPacientes() {

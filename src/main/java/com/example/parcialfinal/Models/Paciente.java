@@ -10,6 +10,7 @@ public class Paciente extends Persona {
         this.motivoConsulta = motivoConsulta;
     }
 
+
     public String getMotivoConsulta() {
         return motivoConsulta;
     }
